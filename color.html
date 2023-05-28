@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
+    <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5.serialserver@0.0.28/lib/p5.serialport.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+    <style>
+        #defaultCanvas0 {
+          border: 10px solid black;
+        }
+  
+        .canvas-container {
+          position: relative;
+          top: 50px;
+          left: 50px;
+        }
+  
+        /* 添加颜色信息样式 */
+        .color-info {
+          position: absolute;
+          top: 0px;
+          left: calc(100% + 20px);
+          width: 200px;
+          background-color: white;
+          padding: 10px;
+          box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+  
+        .color-info span {
+          display: inline-block;
+          width: 50px;
+          height: 50px;
+          border-radius: 25px;
+          margin-right: 5px;
+        }
+
+        .bottom-links {
+          position: fixed;
+          bottom: 20px;
+          width: 100%;
+          text-align: center;
+        }
+
+
+      button {
+        font-family: "Arial", sans-serif;
+        font-size: 16px;
+        padding: 10px 20px;
+        background-color: #8c7cff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        transition: background-color 0.3s;
+      }
+      
+      /* 鼠标悬停在按钮上时的样式 */
+      button:hover {
+        background-color: #fb51e4;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+      import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js";
+      import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-functions.js";
+      import { getDatabase, serverTimestamp, push, ref, onValue, query, orderByChild, equalTo, limitToLast } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+
+      const firebaseConfig = {
+          apiKey: "AIzaSyDBjUEw_DQNMQsZJWfTtLL0PQJoH-xF0kk",
+          authDomain: "sta-cs5041.firebaseapp.com",
+          databaseURL: "https://sta-cs5041-p4.firebaseio.com",
+          projectId: "sta-cs5041",
+          storageBucket: "sta-cs5041.appspot.com",
+          messagingSenderId: "639987847762",
+          appId: "1:639987847762:web:c5a35616a1aa1cf243458b"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const functions = getFunctions(app);
+      const database = getDatabase(app);
+      const firebasetoken = "9dd8d43a-01db-4286-b0e8-371d24237380";
+
+      window.pushHueToFirebase = async function () {
+      const newData = {
+        userId: auth.currentUser.uid,
+        groupId: 21,
+        timestamp: serverTimestamp(),
+        type: "int",
+        integer: window.hue,
+    };
+
+      try {
+        await push(ref(database, "data"), newData);
+        console.log("Value pushed to Realtime Database successfully! Data:", newData);
+      } catch (error) {
+        console.error("Error pushing value to Realtime Database:", error);
+      }
+    };
+
+    window.pushSaturationToFirebase = async function () {
+      const newData2 = {
+        userId: auth.currentUser.uid,
+        groupId: 22,
+        timestamp: serverTimestamp(),
+        type: "int",
+        integer: window.saturation,
+    };
+
+      try {
+        await push(ref(database, "data"), newData2);
+        console.log("Value pushed to Realtime Database successfully! Data:", newData2);
+      } catch (error) {
+        console.error("Error pushing value to Realtime Database:", error);
+      }
+    };
+
+    window.pushBrightnessToFirebase = async function () {
+      const newData3 = {
+        userId: auth.currentUser.uid,
+        groupId: 23,
+        timestamp: serverTimestamp(),
+        type: "int",
+        integer: window.brightness,
+    };
+
+      try {
+        await push(ref(database, "data"), newData3);
+        console.log("Value pushed to Realtime Database successfully! Data:", newData3);
+      } catch (error) {
+        console.error("Error pushing value to Realtime Database:", error);
+      }
+    };
+
+  </script>
+
+
+
+    <div class="canvas-container">
+      <div id="color-info" class="color-info"></div>
+  <div class="bottom-links">
+    <script src="sketch3.js"></script>
+    <a href="index.html">Sakura Page</a>
+    <a href="colorFlower.html">Next Exhibition</a>
+
+  </body>
+</html>

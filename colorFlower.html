@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5.serialserver@0.0.28/lib/p5.serialport.js"></script>
+    <script src="./p5_firebase_files/p5.min.js.下载" integrity="sha512-3RlxD1bW34eFKPwj9gUXEWtdSMC59QqIqHnD8O/NoTwSJhgxRizdcFVQhUMFyTp5RwLTDL0Lbcqtl8b7bFAzog==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script src="sketch5.js"></script>
+    <script src="./p5_firebase_files/p5.min.js.下载" integrity="sha512-3RlxD1bW34eFKPwj9gUXEWtdSMC59QqIqHnD8O/NoTwSJhgxRizdcFVQhUMFyTp5RwLTDL0Lbcqtl8b7bFAzog==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   
+    <style>
+        .bottom-links {
+          position: fixed;
+          bottom: 20px;
+          width: 100%;
+          text-align: center;
+        }
+    </style>
+</head>
+<body inmaintabuse="1" data-new-gr-c-s-check-loaded="14.1029.0" data-gr-ext-installed="">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js";
+        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-functions.js";
+        import { getDatabase, serverTimestamp, push, ref, onValue, query, orderByChild, equalTo, limitToLast } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBjUEw_DQNMQsZJWfTtLL0PQJoH-xF0kk",
+            authDomain: "sta-cs5041.firebaseapp.com",
+            databaseURL: "https://sta-cs5041-p4.firebaseio.com",
+            projectId: "sta-cs5041",
+            storageBucket: "sta-cs5041.appspot.com",
+            messagingSenderId: "639987847762",
+            appId: "1:639987847762:web:c5a35616a1aa1cf243458b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const functions = getFunctions(app);
+        const database = getDatabase(app);
+        const firebasetoken = "9dd8d43a-01db-4286-b0e8-371d24237380";
+        (async () => {
+    const getToken = httpsCallable(functions, "getToken");
+    const token = await getToken({ token: firebasetoken });
+    if (token?.data?.result === "ok" && token?.data?.token) {
+        const userCredentials = await signInWithCustomToken(auth, token.data.token);
+        const user = userCredentials.user;
+        //Hue 
+        onValue(
+            query(ref(database, 'data'), orderByChild('groupId'), equalTo(21), limitToLast(3)), 
+            (snapshot) => {
+                const data1 = snapshot.val();
+                Hue = Object.values(data1 ?? {}).map(el => {
+                    const parsedInt = parseInt(el?.integer ?? '');
+                    return parsedInt;
+                });
+                console.log("Hue:", Hue); // 查看解析后的数组
+            }
+        );
+        //Hue emotions
+        onValue(
+            query(ref(database, 'data'), orderByChild('groupId'), equalTo(37), limitToLast(3)), 
+            (snapshot) => {
+                const dataColor1 = snapshot.val();
+                HueEmotion = Object.values(dataColor1 ?? {}).map(el => {
+                    const parsedInt = parseInt(el?.integer ?? '');
+                    return parsedInt;
+                });
+                console.log("Hue Emotion:", HueEmotion); // 查看解析后的数组
+            }
+        );
+        //Saturation
+        onValue(
+            query(ref(database, 'data'), orderByChild('groupId'), equalTo(22), limitToLast(3)), 
+            (snapshot) => {
+                const data2 = snapshot.val();
+                Saturation = Object.values(data2 ?? {}).map(el => {
+                    const parsedInt = parseInt(el?.integer ?? '');
+                    return parsedInt;
+                });
+                console.log("Saturation", Saturation); // 查看解析后的数组
+            }
+        );
+        //Saturation emotions
+        onValue(
+            query(ref(database, 'data'), orderByChild('groupId'), equalTo(38), limitToLast(3)), 
+            (snapshot) => {
+                const dataColor2 = snapshot.val();
+                SaturationEmotion = Object.values(dataColor2 ?? {}).map(el => {
+                    const parsedInt = parseInt(el?.integer ?? '');
+                    return parsedInt;
+                });
+                console.log("Saturation Emotion", SaturationEmotion); // 查看解析后的数组
+            }
+        );
+        //Brightness
+        onValue(
+            query(ref(database, 'data'), orderByChild('groupId'), equalTo(23), limitToLast(3)), 
+            (snapshot) => {
+                const data3 = snapshot.val();
+                Brightness = Object.values(data3 ?? {}).map(el => {
+                    const parsedInt = parseInt(el?.integer ?? '');
+                    return parsedInt;
+                });
+                console.log("Brightness", Brightness); // 查看解析后的数组
+            }
+        );
+        //Brightness emotions
+        onValue(
+            query(ref(database, 'data'), orderByChild('groupId'), equalTo(39), limitToLast(3)), 
+            (snapshot) => {
+                const dataColor3 = snapshot.val();
+                BrightnessEmotion = Object.values(dataColor3 ?? {}).map(el => {
+                    const parsedInt = parseInt(el?.integer ?? '');
+                    return parsedInt;
+                });
+                console.log("Brightness Emotion", BrightnessEmotion); // 查看解析后的数组
+            }
+        );
+
+
+                /*const inputField = document.getElementById('text-field');
+                const buttonField = document.getElementById('submit-button');
+                buttonField.addEventListener('click', () => {
+                    push(ref(database, "data"), {
+                        userId: user.uid,
+                        groupId: 21,
+                        timestamp: serverTimestamp(),
+                        type: "int",
+                        string: parseInt(inputField.value)
+                    });
+                });
+                inputField.removeAttribute('disabled');
+                buttonField.removeAttribute('disabled');*/
+            } else {
+                console.error(token?.data?.reason ?? "unknownError")
+            }
+        })();
+    </script>
+    
+    <button id="bloomButton">Let the physical flowers keep blooming!</button>
+    <button id="bloomButtonEmotion">Let the emotional flowers keep blooming!</button>
+    <div class="bottom-links">
+        <script src="sketch5.js"></script>
+        <a href="index.html">Sakura Page</a>
+        <a href="color.html">Last Exhibition</a>
+    
+</body>
+</html>

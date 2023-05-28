@@ -1,0 +1,114 @@
+Appendix<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.dom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/addons/p5.sound.js"></script>
+    <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5.serialserver@0.0.28/lib/p5.serialport.js"></script>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dancing+Script&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Satisfy&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster&display=swap">
+
+    <script src="./p5_firebase_files/p5.min.js.下载" integrity="sha512-3RlxD1bW34eFKPwj9gUXEWtdSMC59QqIqHnD8O/NoTwSJhgxRizdcFVQhUMFyTp5RwLTDL0Lbcqtl8b7bFAzog==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style1.css">
+    
+  </head>
+  <body>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+      import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js";
+      import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-functions.js";
+      import { getDatabase, serverTimestamp, push, ref, onValue, query, orderByChild, equalTo, limitToLast } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+
+      const firebaseConfig = {
+          apiKey: "AIzaSyDBjUEw_DQNMQsZJWfTtLL0PQJoH-xF0kk",
+          authDomain: "sta-cs5041.firebaseapp.com",
+          databaseURL: "https://sta-cs5041-p4.firebaseio.com",
+          projectId: "sta-cs5041",
+          storageBucket: "sta-cs5041.appspot.com",
+          messagingSenderId: "639987847762",
+          appId: "1:639987847762:web:c5a35616a1aa1cf243458b"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const functions = getFunctions(app);
+      const database = getDatabase(app);
+      const firebasetoken = "9dd8d43a-01db-4286-b0e8-371d24237380";
+
+      window.pushCherryBlossomsCountToFirebase = async function () {
+      const newData = {
+        userId: auth.currentUser.uid,
+        groupId: 35,
+        timestamp: serverTimestamp(),
+        type: "int",
+        integer: window.cherryBlossomsCount,
+    };
+
+      try {
+        await push(ref(database, "data"), newData);
+        console.log("Value pushed to Realtime Database successfully!");
+      } catch (error) {
+        console.error("Error pushing value to Realtime Database:", error);
+      }
+    };
+
+
+      (async () => {
+          const getToken = httpsCallable(functions, "getToken");
+          const token = await getToken({ token: firebasetoken });
+          if (token?.data?.result === "ok" && token?.data?.token) {
+              const userCredentials = await signInWithCustomToken(auth, token.data.token);
+              const user = userCredentials.user;
+
+              onValue(
+        query(ref(database, 'data'), orderByChild('groupId'), equalTo(35), limitToLast(1)), 
+        (snapshot) => {
+          const dataSakura = snapshot.val();
+          valueSakura = Object.values(dataSakura ?? {}).map(el => el?.integer?.toString() ?? '');
+          console.log("Sakura Value", valueSakura); // 查看解析后的数组
+     }
+)   ;
+        window.cherryBlossomsCount = window.cherryBlossomsCount || 0;
+        const buttonField = document.getElementById('cherryBlossomRainButton');
+        console.log("cherryBlossomsCount", cherryBlossomsCount);
+
+          } else {
+              console.error(token?.data?.reason ?? "unknownError")
+          }
+      })();
+  </script>
+
+
+    <script src="sketch.js"></script>
+    <canvas id="myCanvas"></canvas>
+    <div id="countDisplay"></div>
+    <div id="recieveDisplay"></div>
+    <div id="controls">
+      <div id="sizeSliderContainer">
+        <p> CREAT ! Adjust the size of cherry blossoms or erase it → </p>
+        <div id="sizeSlider"></div>
+      </div>
+      <div id="eraserButtonContainer">
+        <button class="eraser-button" id="eraserButton">Eraser</button>
+      </div>
+      <div id="randomButtonContainer">
+        <button class="icon-button" id="randomButton">
+          <img class="icon" src="cherry-blossom.png" alt="Add Random Cherry
+          Blossom">
+        </button>
+        </div>
+        <div id="cherryBlossomRainContainer">
+        <button class="icon-button" id="cherryBlossomRainButton">
+        <img class="icon" src="cherry-tree.png" alt="Cherry Blossom Rain">
+        </button>
+        </div>
+        </div>
+        <div id="canvasContainer"></div>
+    <a href="page2.html">Next Page</a>
+    </body>
+</html>
