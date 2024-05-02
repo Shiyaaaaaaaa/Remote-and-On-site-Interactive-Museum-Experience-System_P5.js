@@ -22,6 +22,12 @@
   使用Expo开发。  
 - **硬件输入模块**：
   利用micro:bit作为鼠标和键盘的替代品。
+
+## Usage / 使用方法
+
+- 访问链接🔗 (https://www.shiyahci.cn/services-6) 来访问交互式博物馆体验原型介绍和demo。
+作者及代码解释权：[张诗雅][Shiya Zhang]
+
 -------------------------------------------------------------------------------------------------------
 # Interactive Museum Experience System 01/05/2023 - 15/05/2023
 
@@ -48,12 +54,10 @@ This project presents a prototype design for a remote and on-site interactive mu
   Developed with Expo.
 - **Hardware Input Module**:
   Utilizes micro:bit as a substitute for a mouse and keyboard.
------------------------------------------------------------------------------------------------------------
+
 ## Usage / 使用方法
 
-- 访问链接🔗 (https://www.shiyahci.cn/services-6) 来访问交互式博物馆体验。
-  Visit🔗 (https://www.shiyahci.cn/services-6) to access the interactive museum experience.
-- 按照屏幕上的说明进行导航和与展品的交互。 Follow on-screen instructions to navigate and interact with exhibits.
-
-作者及代码解释权：[张诗雅][Shiya Zhang]
+- Visit🔗 (https://www.shiyahci.cn/services-6) to access the introduction of interactive museum experience.
+- Follow on-screen instructions to navigate and interact with exhibits and the demo.
+Author：[张诗雅][Shiya Zhang]
 
